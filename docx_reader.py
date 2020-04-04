@@ -17,7 +17,6 @@ class MergeDocument:
             self.duplicate_page(para_list)
         wait_page_breaks = 1
         for items in self.matches:
-            print(items)
             page_breaks_waited = 0
             for paragraph in self.document.paragraphs:
                 for key, value in items.items():
@@ -26,11 +25,9 @@ class MergeDocument:
                 for run in paragraph.runs:
                     if 'w:br' in run._element.xml and 'type="page"' in run._element.xml:
                         page_breaks_waited += 1
-                        print(page_breaks_waited)
 
                 if page_breaks_waited >= wait_page_breaks:
                     wait_page_breaks += 1
-                    print("wait" + str(wait_page_breaks))
                     break
 
     def replace_matches(self):
