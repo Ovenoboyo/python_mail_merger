@@ -1,13 +1,27 @@
 import copy
 import os
+import shutil
 
 from docx_reader import init_document, MergeDocument
 from excel_reader import init_sheet, get_headers, get_values, sort_dicts
 from pptx_reader import init_ppt, MergePPT
-from tkinter_message import show_info
+from tkinter_message import show_info, show_error
+
+
+def wipe_out_folder(out_path):
+    for filename in os.listdir(out_path):
+        file_path = os.path.join(out_path, filename)
+        try:
+            if os.path.isfile(file_path) or os.path.islink(file_path):
+                os.unlink(file_path)
+            elif os.path.isdir(file_path):
+                shutil.rmtree(file_path)
+        except Exception as e:
+            show_error("Error", str(e))
 
 
 def main_new_page(xlsx_path, docx_path, pptx_path, out_path):
+    wipe_out_folder(out_path)
     active_sheet = init_sheet(xlsx_path)
     headers = get_headers(active_sheet)
     values = {}
@@ -37,6 +51,7 @@ def main_new_page(xlsx_path, docx_path, pptx_path, out_path):
 
 
 def main_seperate_doc(xlsx_path, docx_path, pptx_path, out_path):
+    wipe_out_folder(out_path)
     active_sheet = init_sheet(xlsx_path)
     headers = get_headers(active_sheet)
     values = {}
