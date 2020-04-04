@@ -1,9 +1,10 @@
 import os
 import tkinter as tk
+from functools import partial
 from tkinter import filedialog
 from tkinter import ttk
 
-from main import main
+from main import main_seperate_doc, main_new_page
 from tkinter_message import show_error
 
 root = tk.Tk()
@@ -66,10 +67,13 @@ def out_folder():
         e4.insert(0, out_path)
 
 
-def run():
+def run(seperate_files=True):
     if path_xlsx:
         save_paths()
-        main(xlsx_path=path_xlsx, docx_path=path_docx, pptx_path=path_pptx, out_path=out_path)
+        if seperate_files:
+            main_seperate_doc(xlsx_path=path_xlsx, docx_path=path_docx, pptx_path=path_pptx, out_path=out_path)
+        else:
+            main_new_page(xlsx_path=path_xlsx, docx_path=path_docx, pptx_path=path_pptx, out_path=out_path)
     else:
         show_error("Path error",  "Excel path can't be empty")
 
@@ -105,6 +109,6 @@ if __name__ == '__main__':
     ttk.Button(root, text="Open pptx", command=pptx_file).grid(row=3, column=1, padx=4, pady=4, sticky='ew')
     ttk.Button(root, text="Select output folder", command=out_folder).grid(row=4, column=1, padx=4, pady=4, sticky='ew')
 
-    ttk.Button(root, text="Start mail merge", command=run).grid(row=5, column=2, padx=4, pady=4, sticky='ew')
-
+    ttk.Button(root, text="Start (Separate files)", command=partial(run, True)).grid(row=5, column=1, padx=4, pady=4, sticky='ew')
+    ttk.Button(root, text="Start (Same file)", command=partial(run, False)).grid(row=5, column=2, padx=4, pady=4, sticky='ew')
     root.mainloop()
