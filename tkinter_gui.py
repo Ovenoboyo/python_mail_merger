@@ -4,7 +4,7 @@ from functools import partial
 from tkinter import filedialog
 from tkinter import ttk
 
-from main import main_seperate_doc, main_new_page
+from main import main_seperate_doc, main_new_page, save_ppt_as_pdf
 from tkinter_message import show_error
 
 root = tk.Tk()
@@ -78,6 +78,10 @@ def run(seperate_files=True):
         show_error("Path error",  "Excel path can't be empty")
 
 
+def ppt_as_pdf():
+    save_ppt_as_pdf(out_path)
+
+
 if __name__ == '__main__':
     if os.path.exists("last_used_paths"):
         f = open("last_used_paths")
@@ -111,4 +115,6 @@ if __name__ == '__main__':
 
     ttk.Button(root, text="Start (Separate files)", command=partial(run, True)).grid(row=5, column=1, padx=4, pady=4, sticky='ew')
     ttk.Button(root, text="Start (Same file)", command=partial(run, False)).grid(row=5, column=2, padx=4, pady=4, sticky='ew')
+    ttk.Button(root, text="pptx to pdf", command=ppt_as_pdf).grid(row=5, column=0, padx=4, pady=4,
+                                                                                 sticky='ew')
     root.mainloop()

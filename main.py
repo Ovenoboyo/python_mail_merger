@@ -1,6 +1,9 @@
 import copy
 import os
 import shutil
+from os.path import isfile, join
+
+import win32com.client
 
 from docx_reader import init_document, MergeDocument
 from excel_reader import init_sheet, get_headers, get_values, sort_dicts
@@ -77,4 +80,13 @@ def main_seperate_doc(xlsx_path, docx_path, pptx_path, out_path):
         doc_docx.save()
         doc_ppt.save()
 
+    show_info("Success", "Completed mail merge successfully")
+
+
+def save_ppt_as_pdf(out_path):
+    shutil.copy(os.path.join(os.path.dirname((os.path.abspath(__file__))), "ppt2pdf.ps1"), out_path)
+    import subprocess
+    p = subprocess.Popen(["powershell", os.path.join(out_path, "ppt2pdf.ps1")], stdout=subprocess.PIPE)
+    p.communicate()
+    os.remove(os.path.join(out_path, "ppt2pdf.ps1"))
     show_info("Success", "Completed mail merge successfully")
