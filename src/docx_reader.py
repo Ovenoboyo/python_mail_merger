@@ -35,7 +35,6 @@ class MergeDocument:
             for paragraph in self.document.paragraphs:
                 if ("{{" + key + "}}") in paragraph.text:
                     paragraph.text = paragraph.text.replace("{{" + key + "}}", str(value))
-                    print(key)
 
     def duplicate_page(self, para_list):
         self.document.add_page_break()

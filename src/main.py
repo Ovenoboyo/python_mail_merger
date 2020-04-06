@@ -86,7 +86,8 @@ def main_seperate_doc(xlsx_path, docx_path, pptx_path, out_path):
 def save_ppt_as_pdf(out_path):
     shutil.copy(os.path.join(os.path.dirname((os.path.abspath(__file__))), "ppt2pdf.ps1"), out_path)
     import subprocess
-    p = subprocess.Popen(["powershell", os.path.join(out_path, "ppt2pdf.ps1")], stdout=subprocess.PIPE)
-    p.communicate()
+    print(os.path.join(out_path, "ppt2pdf.ps1"))
+    cmd = [r"powershell", os.path.join(out_path, "ppt2pdf.ps1").replace(" ", "' '")]
+    subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE).communicate()
     os.remove(os.path.join(out_path, "ppt2pdf.ps1"))
-    show_info("Success", "Completed mail merge successfully")
+    show_info("Success", "Completed conversion successfully")

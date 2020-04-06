@@ -1,3 +1,4 @@
+import datetime
 import os
 
 from openpyxl import load_workbook
@@ -6,6 +7,7 @@ from tkinter_message import show_error
 
 BASE_DIR = os.path.dirname((os.path.abspath(__file__)))
 
+datetime_types = [datetime.datetime, datetime.date, datetime.time, datetime.timedelta]
 
 def init_sheet(path):
     try:
@@ -32,6 +34,9 @@ def get_values(active_sheet, column):
     i = 2
     while True:
         if active_sheet.cell(i, column).value:
+            # TODO: Support formatting as in xlsx
+            if type(active_sheet.cell(i, column).value) is datetime.datetime:
+                active_sheet.cell(i, column).value = active_sheet.cell(i, column).value.strftime('%d-%m-%Y')
             active_cells.append(active_sheet.cell(i, column).value)
             i += 1
         else:
